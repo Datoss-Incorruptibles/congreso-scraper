@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import csv
 import json
 
-def fetLink():
+def getLinks():
   totalLeyes2016 = 7.057	
   paginacion = 100
   llamadas = 71
@@ -170,9 +170,11 @@ def getCompleteData():
       
       arrayOfNumero = detalle[1].split("/")
       # arrayOfNumero = valNumero.split("/")
-      print(arrayOfNumero)
       valueNumeroSimple = arrayOfNumero[0]
       valueFechaUltima = detalle[2]
+      valueEstado = detalle[4]
+      print(f'arrayOfNumero {arrayOfNumero}---- "estado:{valueEstado} ')
+
       if valueNumeroSimple.isnumeric():
         print(f' eres numero: {valueNumeroSimple}')
         valueLinkDetalle = f'http://www2.congreso.gob.pe/sicr/tradocestproc/Expvirt_2011.nsf/visbusqptramdoc1621/{valueNumeroSimple}?opendocument'
@@ -182,6 +184,7 @@ def getCompleteData():
 
       tmpArray.append(valueNumeroSimple)
       tmpArray.append(valueFechaUltima)
+      tmpArray.append(valueEstado)
       tmpArray.append(valueLinkDetalle)
       counter = counter +1 
       print(f'{counter}')
@@ -198,6 +201,6 @@ def getCompleteData():
 
 
 
+# getLinks()
 
-
-# getCompleteData()
+getCompleteData()

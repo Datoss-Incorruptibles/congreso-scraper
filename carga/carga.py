@@ -32,6 +32,7 @@ print("Database opened successfully")
 #   iniciativa_agrupadas character varying,
 #   numero_simple character varying,
 #   fecha_ultima character varying,
+#   estado character varying,
 #   link_detalle character varying,
 #   fecha_registro timestamp NOT NULL DEFAULT now(),
 #   fecha_modificacion timestamp NULL
@@ -74,9 +75,10 @@ with open(f'../dataTotal2.json', 'r', encoding='utf-8')as outFile:
         iniciativa_agrupadas, \
         numero_simple, \
         fecha_ultima, \
+        estado, \
         link_detalle \
         )\
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,  %s, %s, %s, %s, %s)", (
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,  %s, %s, %s, %s, %s, %s)", (
         row[0],
         row[1],
         row[2],
@@ -91,13 +93,14 @@ with open(f'../dataTotal2.json', 'r', encoding='utf-8')as outFile:
         row[11],
         row[12],
         row[13],
-        row[14]
+        row[14],
+        row[15]
         ))
       count+=1
       print(row)
       print("insert row ",count," success!")
-      # if count == 1000 or count == 2000 or count == 3000 or count == 4000 or count == 5000 or count == 6000:
-      #   con.commit()
+      if count == 1000 or count == 2000 or count == 3000 or count == 4000 or count == 5000 or count == 6000:
+        con.commit()
 
   con.commit()
 print("Table proyectos_ley_congreso cargado successfully")
