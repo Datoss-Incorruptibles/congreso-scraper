@@ -60,14 +60,14 @@ def getLinks():
 
 
   dataFinalJson = json.dumps(dataFinal)
-  with open('dataFinal2.json', 'w') as file:  # Use file to refer to the file object
+  with open('links20162021.json', 'w') as file:  # Use file to refer to the file object
     file.write(dataFinalJson)
 
 
 def getCompleteData():
   baseUrl = "http://www2.congreso.gob.pe"
 
-  with open(f'dataFinal2.json', 'r', encoding='utf-8') as outFile:
+  with open(f'links20162021.json', 'r', encoding='utf-8') as outFile:
     doc = outFile.read()
     # print(doc)
     docString = json.loads(doc)
@@ -177,8 +177,8 @@ def getCompleteData():
 
       if valueNumeroSimple.isnumeric():
         print(f' eres numero: {valueNumeroSimple}')
-        valueLinkDetalle = f'http://www2.congreso.gob.pe/sicr/tradocestproc/Expvirt_2011.nsf/visbusqptramdoc1621/{valueNumeroSimple}?opendocument'
-      else:
+        valueLinkDetalle = f'http://www2.congreso.gob.pe/sicr/tradocestproc/Expvirt_2011.nsf/visbusqptramdoc/{valueNumeroSimple}?opendocument'
+      else:                  
         print(f'NO eres numero: {valueNumeroSimple}')
         valueLinkDetalle = ""
 
@@ -195,7 +195,7 @@ def getCompleteData():
 
       # print(f'{valPeriodo}--WW-{valLegislatura}-WW--{valPresentacion}--WW-{valNumero}--WW-{valProponente}-WW--{valPalamentario}-WW--{valTitulo}--WW-{valSumilla}--WW-{valAutores}---{valAdherentes}-WW--{valSeguimiento}--WW-{valIniciativa}')
   dataFinalJson = json.dumps(totalData)
-  with open('dataTotal2.json', 'w') as file:  # Use file to refer to the file object
+  with open('data20162021.json', 'w') as file:  # Use file to refer to the file object
     file.write(dataFinalJson)
 
 
@@ -203,4 +203,5 @@ def getCompleteData():
 
 # getLinks()
 
-getCompleteData()
+# getCompleteData()
+

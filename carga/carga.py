@@ -14,96 +14,95 @@ con = psycopg2.connect(database=os.getenv("DB_NAME"), user=os.getenv("DB_USER"),
 print(con)
 print("Database opened successfully")
 
-# cur = con.cursor()
-# cur.execute('''
-# DROP TABLE IF EXISTS de.proyectos_ley_congreso;
-# CREATE TABLE IF NOT EXISTS  de.proyectos_ley_congreso (
-#   periodo character varying,
-#   legislatura character varying,
-#   fecha_presentacion character varying,
-#   numero character varying,
-#   proponente character varying,
-#   grupo_parlamentario character varying,
-#   titulo character varying,
-#   sumilla character varying,
-#   autores character varying,
-#   adherentes character varying,
-#   seguimiento character varying,
-#   iniciativa_agrupadas character varying,
-#   numero_simple character varying,
-#   fecha_ultima character varying,
-#   estado character varying,
-#   link_detalle character varying,
-#   fecha_registro timestamp NOT NULL DEFAULT now(),
-#   fecha_modificacion timestamp NULL
-#   );
-# ''')
-# con.commit()
+def createProyectosDeLey():
+  cur = con.cursor()
+  cur.execute('''
+  DROP TABLE IF EXISTS de.proyectos_ley_congreso;
+  CREATE TABLE IF NOT EXISTS  de.proyectos_ley_congreso (
+    id_tmp character varying,
+    periodo character varying,
+    legislatura character varying,
+    fecha_presentacion character varying,
+    numero character varying,
+    proponente character varying,
+    grupo_parlamentario character varying,
+    titulo character varying,
+    sumilla character varying,
+    autores character varying,
+    adherentes character varying,
+    seguimiento character varying,
+    iniciativa_agrupadas character varying,
+    numero_simple character varying,
+    fecha_ultima character varying,
+    estado character varying,
+    link_detalle character varying,
+    periodo_inicio character varying,
+    periodo_fin character varying,
+    fecha_registro TIMESTAMP DEFAULT now() NOT NULL
+  );
+  ''')
+  con.commit()
 
-# print("Table expedientes_poder_jud created successfully")
+  print("Table expedientes_poder_jud created successfully")
 
-# con.close()
 
 
 # ----------------------------------------------------------------
 
-cur = con.cursor()
-
-with open(f'../dataTotal2.json', 'r', encoding='utf-8')as outFile:
-  doc = outFile.read()
-  # print(doc)
-  docString = json.loads(doc)
-
-  count = 0
-  # print(docString)
-  cur.execute("TRUNCATE de.proyectos_ley_congreso")
-
-  for row in docString:
-    if row:
-      cur.execute("INSERT INTO de.proyectos_ley_congreso( \
-        periodo, \
-        legislatura, \
-        fecha_presentacion, \
-        numero, \
-        proponente, \
-        grupo_parlamentario, \
-        titulo, \
-        sumilla, \
-        autores, \
-        adherentes, \
-        seguimiento, \
-        iniciativa_agrupadas, \
-        numero_simple, \
-        fecha_ultima, \
-        estado, \
-        link_detalle \
-        )\
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s,%s,  %s, %s, %s, %s, %s, %s)", (
-        row[0],
-        row[1],
-        row[2],
-        row[3],
-        row[4],
-        row[5],
-        row[6],
-        row[7],
-        row[8],
-        row[9],
-        row[10],
-        row[11],
-        row[12],
-        row[13],
-        row[14],
-        row[15]
-        ))
-      count+=1
-      print(row)
-      print("insert row ",count," success!")
-      if count == 1000 or count == 2000 or count == 3000 or count == 4000 or count == 5000 or count == 6000:
-        con.commit()
-
+def createProyectosDeLeyAutores():
+  cur = con.cursor()
+  cur.execute('''
+  DROP TABLE IF EXISTS de.proyectos_ley_autores;
+  CREATE TABLE IF NOT EXISTS de.proyectos_ley_autores (
+    id_tmp character varying,
+    nombre character varying
+    );
+  ''')
   con.commit()
-print("Table proyectos_ley_congreso cargado successfully")
+  con.close()
+  print("Table expedientes_poder_jud created successfully")
 
-con.close()
+# ----------------------------------------------------------------
 
+
+
+def cargaCsvToDB():
+  cur = con.cursor()
+
+  copy_sql = """
+            COPY de.proyectos_ley_congreso FROM stdin WITH CSV HEADER
+            DELIMITER as ','
+            """
+  # with open('../data20162021.csv', 'r') as f:
+  # with open('../data20112016.csv', 'r') as f:
+  with open('../data20062011.csv', 'r') as f:
+      cur.copy_expert(sql=copy_sql, file=f)
+      con.commit()
+      con.close()
+  print("Table proyectos_ley_congreso cargado successfully")
+
+  con.close()
+
+
+def cargaAutoresToDB():
+  cur = con.cursor()
+
+  copy_sql = """
+            COPY de.proyectos_ley_autores FROM stdin WITH CSV HEADER
+            DELIMITER as ','
+            """
+  # with open('../autores20162021.csv', 'r') as f:
+  # with open('../autores20112016.csv', 'r') as f:
+  with open('../autores20062011.csv', 'r') as f:
+      cur.copy_expert(sql=copy_sql, file=f)
+      con.commit()
+      con.close()
+  print("Table proyectos_ley_autores cargado successfully")
+
+  con.close()
+
+# createProyectosDeLey()
+# createProyectosDeLeyAutores()
+
+# cargaCsvToDB()
+cargaAutoresToDB()
