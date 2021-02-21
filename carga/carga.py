@@ -75,13 +75,16 @@ def cargaCsvToDB():
             """
   # with open('../data20162021.csv', 'r') as f:
   # with open('../data20112016.csv', 'r') as f:
-  with open('../data20062011.csv', 'r') as f:
-      cur.copy_expert(sql=copy_sql, file=f)
-      con.commit()
-      con.close()
-  print("Table proyectos_ley_congreso cargado successfully")
+  # with open('../data20062011.csv', 'r') as f:
+  # with open('../data20012006.csv', 'r') as f:
+  # with open('../data20002001.csv', 'r') as f:
+  with open('../data19952000.csv', 'r') as f:
 
-  con.close()
+    cur.copy_expert(sql=copy_sql, file=f)
+    con.commit()
+    print("Table proyectos_ley_congreso cargado successfully")
+
+    # con.close()
 
 
 def cargaAutoresToDB():
@@ -93,16 +96,20 @@ def cargaAutoresToDB():
             """
   # with open('../autores20162021.csv', 'r') as f:
   # with open('../autores20112016.csv', 'r') as f:
-  with open('../autores20062011.csv', 'r') as f:
-      cur.copy_expert(sql=copy_sql, file=f)
-      con.commit()
-      con.close()
-  print("Table proyectos_ley_autores cargado successfully")
+  # with open('../autores20062011.csv', 'r') as f:
+  # with open('../autores20012006.csv', 'r') as f:
+  # with open('../autores20002001.csv', 'r') as f:
+  with open('../autores19952000.csv', 'r') as f:
 
-  con.close()
+    cur.copy_expert(sql=copy_sql, file=f)
+    con.commit()
+    print("Table proyectos_ley_autores cargado successfully")
+
+    con.close()
+
 
 # createProyectosDeLey()
 # createProyectosDeLeyAutores()
 
 # cargaCsvToDB()
-cargaAutoresToDB()
+# cargaAutoresToDB()
